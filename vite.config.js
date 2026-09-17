@@ -6,7 +6,8 @@ import { fileURLToPath } from 'url'
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ command }) => ({
+  base: command === 'build' ? '/bolster-page/' : '/',
   plugins: [react()],
   resolve: {
     alias: {
@@ -18,4 +19,4 @@ export default defineConfig({
     port: 5173,
     allowedHosts: true // Allow tunnel domains (localtunnel, localhost.run, pinggy, etc.)
   }
-})
+}))

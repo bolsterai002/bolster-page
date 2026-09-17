@@ -1,3 +1,6 @@
+const BASE = import.meta.env.BASE_URL || '/';
+const getAsset = (path) => `${BASE.endsWith('/') ? BASE : `${BASE}/`}${path.replace(/^\//, '')}`;
+
 export const BOOKS_DATA = [
   {
     id: "alienverse",
@@ -8,7 +11,7 @@ export const BOOKS_DATA = [
     originalPrice: 35.00,
     rating: 4.98,
     reviewCount: 4210,
-    cover: "/images/celestial_atlas.jpg",
+    cover: getAsset("images/celestial_atlas.jpg"),
     badge: "First Edition",
     featured: true,
     formats: ["Hardcover", "eBook", "Audiobook"],
@@ -31,7 +34,7 @@ export const BOOKS_DATA = [
     originalPrice: 36.00,
     rating: 4.88,
     reviewCount: 2190,
-    cover: "/images/architects_mind.jpg",
+    cover: getAsset("images/architects_mind.jpg"),
     badge: "Editor's Pick",
     featured: true,
     formats: ["Hardcover", "eBook", "Audiobook"],
@@ -54,7 +57,7 @@ export const BOOKS_DATA = [
     originalPrice: 29.99,
     rating: 4.91,
     reviewCount: 1740,
-    cover: "/images/sunken_city.jpg",
+    cover: getAsset("images/sunken_city.jpg"),
     badge: "Award Winner",
     featured: true,
     formats: ["Hardcover", "eBook"],
@@ -77,7 +80,7 @@ export const BOOKS_DATA = [
     originalPrice: 30.00,
     rating: 4.82,
     reviewCount: 1530,
-    cover: "/images/neon_solitude.jpg",
+    cover: getAsset("images/neon_solitude.jpg"),
     badge: "Trending",
     featured: true,
     formats: ["Hardcover", "eBook", "Audiobook"],
@@ -100,7 +103,7 @@ export const BOOKS_DATA = [
     originalPrice: 27.00,
     rating: 4.96,
     reviewCount: 4200,
-    cover: "/images/art_of_stillness.jpg",
+    cover: getAsset("images/art_of_stillness.jpg"),
     badge: "Staff Favorite",
     featured: true,
     formats: ["Hardcover", "eBook", "Audiobook"],
