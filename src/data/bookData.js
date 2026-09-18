@@ -52,35 +52,7 @@ export const FEATURED_AUTHOR = {
   awards: []
 };
 
-export const TESTIMONIALS = [
-  {
-    id: "t1",
-    name: "Dr. Evelyn Ward",
-    role: "Literature & Tech Fellow, Oxford",
-    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
-    comment: "ALIENVERSE's developer series introduces an unprecedented paradigm for software engineering. The physical collector's edition is museum-grade craftsmanship.",
-    rating: 5,
-    book: "Alienverse: AI Software Engineering Standards"
-  },
-  {
-    id: "t2",
-    name: "Julian Chen",
-    role: "AI Systems Architect, Synthetica",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80",
-    comment: "'When humans get stuck, aliens arrive.' Arshak Roshan's guide fundamentally shifted how our engineering team builds agentic software.",
-    rating: 5,
-    book: "Alienverse: AI Software Engineering Standards"
-  },
-  {
-    id: "t3",
-    name: "Samantha Morales",
-    role: "Engineering Director & Podcast Host",
-    avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=150&q=80",
-    comment: "The audio preview feature and instant chapter sample allowed our entire engineering team to review before bulk ordering hardcovers for the tech library.",
-    rating: 5,
-    book: "Alienverse: AI Software Engineering Standards"
-  }
-];
+export const TESTIMONIALS = [];
 
 export const GENRES = [
   "All Books"

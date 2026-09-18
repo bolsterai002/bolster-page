@@ -247,7 +247,7 @@ export default function App() {
         />
 
         {/* Reader Testimonials */}
-        <Testimonials />
+        <Testimonials onAddToast={(msg) => addToast(msg, <CheckCircle2 size={15} color="#10b981" />)} />
 
         {/* Readers Club Newsletter */}
         <Newsletter
