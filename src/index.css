@@ -1976,11 +1976,10 @@ button {
 }
 
 .author-stats-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1rem;
-  margin: 2rem 0;
-  padding: 1.2rem;
+  display: inline-flex;
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+  padding: 0.9rem 1.6rem;
   background: #18181b;
   border-radius: var(--radius-md);
   border: 1px solid #27272a;
@@ -3177,10 +3176,10 @@ button {
   }
 
   .author-stats-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.6rem;
-    padding: 0.75rem;
-    margin: 1.2rem 0;
+    display: inline-flex;
+    gap: 1rem;
+    padding: 0.75rem 1.4rem;
+    margin: 1rem 0;
   }
 
   .author-stat-value {

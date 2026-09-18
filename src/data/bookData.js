@@ -37,14 +37,9 @@ export const FEATURED_AUTHOR = {
   bio: "Arshak Roshan is the author of the acclaimed Alienverse Developer Series, articulating new software engineering standards for the synthetic intelligence era. His work merges technical systems architecture with cosmological foresight.",
   quote: "“When humans get stuck, aliens arrive. The next leap in software development belongs to those who build beyond terrestrial limits.”",
   stats: [
-    { label: "Series", value: "Developer #1" },
-    { label: "Rating", value: "5.0 ★" },
-    { label: "Edition", value: "Triple Release" }
+    { label: "Series", value: "Developer #1" }
   ],
-  awards: [
-    "Pioneer in AI Software Engineering Standards 2026",
-    "Author of the Alienverse Developer Series"
-  ]
+  awards: []
 };
 
 export const TESTIMONIALS = [
