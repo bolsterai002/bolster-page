@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Star, CheckCircle2, MessageSquarePlus, Send, X, Feather } from "lucide-react";
+import { Star, CheckCircle2, MessageSquarePlus, Send, X, Feather, Loader2 } from "lucide-react";
 import { BOOKS_DATA } from "../data/bookData";
 
 const STORAGE_KEY = "alienverse_customer_reviews";
+const CLOUD_API_URL = "https://api.restful-api.dev/objects/ff808181a09d98f701a0b4eb7e01361f";
 
 export default function Testimonials({ onAddToast }) {
   const [reviews, setReviews] = useState(() => {
@@ -23,19 +24,44 @@ export default function Testimonials({ onAddToast }) {
   const [hoverRating, setHoverRating] = useState(0);
   const [comment, setComment] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
+  // Sync latest reviews from Cloud on mount
   useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(reviews));
-    } catch (e) {
-      console.error("Failed to save reviews", e);
-    }
-  }, [reviews]);
+    let isMounted = true;
+    const fetchCloudReviews = async () => {
+      try {
+        setIsLoading(true);
+        const res = await fetch(CLOUD_API_URL);
+        if (res.ok) {
+          const json = await res.json();
+          const cloudList = Array.isArray(json?.data?.reviews) ? json.data.reviews : [];
+          if (isMounted) {
+            setReviews(cloudList);
+            try {
+              localStorage.setItem(STORAGE_KEY, JSON.stringify(cloudList));
+            } catch {}
+          }
+        }
+      } catch (err) {
+        console.warn("Could not sync reviews from cloud:", err);
+      } finally {
+        if (isMounted) setIsLoading(false);
+      }
+    };
 
-  const handleSubmit = (e) => {
+    fetchCloudReviews();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!name.trim() || !comment.trim() || !bookName.trim()) return;
 
+    setIsSubmitting(true);
     const newReview = {
       id: "rev-" + Date.now(),
       name: name.trim(),
@@ -45,20 +71,55 @@ export default function Testimonials({ onAddToast }) {
       date: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
     };
 
-    setReviews((prev) => [newReview, ...prev]);
-    setName("");
-    setComment("");
-    setRating(5);
-    setSubmitted(true);
+    // 1. Optimistically display locally
+    const currentList = reviews.filter((r) => r.id !== newReview.id);
+    const updated = [newReview, ...currentList];
+    setReviews(updated);
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+    } catch {}
 
-    if (onAddToast) {
-      onAddToast("Thank you! Your review has been posted.");
+    // 2. Sync to cloud so all phones and visitors see it
+    try {
+      const res = await fetch(CLOUD_API_URL);
+      let latestList = [];
+      if (res.ok) {
+        const json = await res.json();
+        latestList = Array.isArray(json?.data?.reviews) ? json.data.reviews : [];
+      }
+      const merged = [newReview, ...latestList.filter((r) => r.id !== newReview.id)];
+
+      await fetch(CLOUD_API_URL, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: "Alienverse Global Customer Reviews",
+          data: { reviews: merged }
+        })
+      });
+
+      setReviews(merged);
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+      } catch {}
+    } catch (err) {
+      console.warn("Cloud sync error, saved to local cache:", err);
+    } finally {
+      setIsSubmitting(false);
+      setName("");
+      setComment("");
+      setRating(5);
+      setSubmitted(true);
+
+      if (onAddToast) {
+        onAddToast("Thank you! Your review is now live for all readers.");
+      }
+
+      setTimeout(() => {
+        setSubmitted(false);
+        setIsFormOpen(false);
+      }, 1600);
     }
-
-    setTimeout(() => {
-      setSubmitted(false);
-      setIsFormOpen(false);
-    }, 1600);
   };
 
   const getInitials = (str) => {
@@ -196,10 +257,20 @@ export default function Testimonials({ onAddToast }) {
                     <button
                       type="submit"
                       className="btn-primary"
+                      disabled={isSubmitting}
                       style={{ padding: "0.55rem 1.4rem", fontSize: "0.85rem", gap: "7px" }}
                     >
-                      <Send size={14} />
-                      <span>Post Review</span>
+                      {isSubmitting ? (
+                        <>
+                          <Loader2 size={14} className="spin-animate" />
+                          <span>Publishing...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Send size={14} />
+                          <span>Post Review</span>
+                        </>
+                      )}
                     </button>
                   </div>
                 </div>
