@@ -61,22 +61,6 @@ export default function Hero({ books, onPreviewBook, onAddToCart }) {
                 </a>
               )}
             </div>
-
-            {/* Social Proof Metrics */}
-            <div className="hero-metrics">
-              <div className="metric-item">
-                <span className="metric-number">50,000+</span>
-                <span className="metric-label">Avid Readers</span>
-              </div>
-              <div className="metric-item">
-                <span className="metric-number">4.95 ★</span>
-                <span className="metric-label">Average Score</span>
-              </div>
-              <div className="metric-item">
-                <span className="metric-number">100%</span>
-                <span className="metric-label">Eco-Print Verified</span>
-              </div>
-            </div>
           </div>
         </div>
       </div>

@@ -78,10 +78,6 @@ export const TESTIMONIALS = [
 ];
 
 export const GENRES = [
-  "All Books",
-  "Sci-Fi",
-  "Tech & AI",
-  "Non-Fiction",
-  "Developer Series",
-  "Philosophy"
+  "All Books"
 ];
+
