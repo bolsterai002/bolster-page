@@ -140,33 +140,36 @@ export default function App() {
       .join("\n\n");
 
     const messageLines = [
-      `🛒 *NEW BOOK ORDER - Alienverse*`,
-      `━━━━━━━━━━━━━━━━━━━━`,
-      `📋 *Order Ref:* ${randomOrderNum}`,
-      `📅 *Date:* ${formattedDate}`,
+      `*ALIENVERSE BOOKSTORE*`,
+      `Order Confirmation`,
       ``,
-      `📚 *ORDERED BOOKS (${itemCount} Item${itemCount > 1 ? "s" : ""}):*`,
-      `────────────────────`,
+      `Order No: *${randomOrderNum}*`,
+      `Order Date: ${formattedDate}`,
+      ``,
+      `*ORDER SUMMARY*`,
       itemsText,
-      `────────────────────`,
-      `💰 *Items Subtotal:* $${subtotal.toFixed(2)}`,
+      ``,
+      `────────────────────────`,
+      `Items subtotal:        $${subtotal.toFixed(2)}`,
     ];
 
     if (discount > 0) {
-      messageLines.push(`🎟️ *Discount (${promoCode || "READ20"}):* -$${discount.toFixed(2)}`);
+      messageLines.push(
+        `Discount${promoCode ? ` (${promoCode})` : ""}:      -$${discount.toFixed(2)}`
+      );
     }
 
     messageLines.push(
-      `🚚 *Shipping:* ${shipping === 0 ? "FREE" : `$${shipping.toFixed(2)}`}`,
-      `💳 *TOTAL PAYABLE:* $${total.toFixed(2)}`,
-      `━━━━━━━━━━━━━━━━━━━━`,
+      `Shipping:              ${shipping === 0 ? "Free" : `$${shipping.toFixed(2)}`}`,
+      `────────────────────────`,
+      `*TOTAL:                 $${total.toFixed(2)}*`,
       ``,
-      `💬 *Customer Note:*`,
-      `Hello! I would like to purchase the book order above from Alienverse. Please confirm availability and share payment/delivery options. Thank you!`
+      `Thank you for shopping with Alienverse.`,
+      `Please confirm availability and we’ll share payment and delivery details.`
     );
 
-    const fullMessage = messageLines.join("\n");
-    const whatsappUrl = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(fullMessage)}`;
+    const billMessage = messageLines.join("\n");
+    const whatsappUrl = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(billMessage)}`;
 
     // Open WhatsApp
     window.open(whatsappUrl, "_blank", "noopener,noreferrer");
