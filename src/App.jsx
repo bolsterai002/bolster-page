@@ -140,7 +140,7 @@ export default function App() {
       .join("\n\n");
 
     const messageLines = [
-      `🛒 *NEW BOOK ORDER - BOLSTER BOOKS*`,
+      `🛒 *NEW BOOK ORDER - Alienverse*`,
       `━━━━━━━━━━━━━━━━━━━━`,
       `📋 *Order Ref:* ${randomOrderNum}`,
       `📅 *Date:* ${formattedDate}`,
@@ -162,7 +162,7 @@ export default function App() {
       `━━━━━━━━━━━━━━━━━━━━`,
       ``,
       `💬 *Customer Note:*`,
-      `Hello! I would like to purchase the book order above from Bolster Books. Please confirm availability and share payment/delivery options. Thank you!`
+      `Hello! I would like to purchase the book order above from Alienverse. Please confirm availability and share payment/delivery options. Thank you!`
     );
 
     const fullMessage = messageLines.join("\n");
