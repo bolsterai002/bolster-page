@@ -131,6 +131,9 @@ export default function Testimonials({ onAddToast }) {
     return str.slice(0, 2).toUpperCase();
   };
 
+  const hasReviews = reviews.length > 0;
+  const showForm = isFormOpen || !hasReviews;
+
   return (
     <section id="reviews" className="testimonials-section">
       <div className="container">
@@ -139,40 +142,49 @@ export default function Testimonials({ onAddToast }) {
           <div className="section-tag">Reader Community</div>
           <h2 className="section-title">Customer Reviews & Impressions</h2>
           <p className="section-desc">
-            Real feedback from readers and engineers experiencing the Alienverse series.
+            {hasReviews
+              ? "Real feedback from readers and engineers experiencing the Alienverse series."
+              : `Be the first reader to review ${defaultBookTitle}.`}
           </p>
 
-          <div style={{ marginTop: "1.4rem", display: "flex", justifyContent: "center" }}>
-            <button
-              className="btn-primary"
-              style={{ padding: "0.55rem 1.4rem", fontSize: "0.88rem", gap: "8px" }}
-              onClick={() => setIsFormOpen((prev) => !prev)}
-            >
-              {isFormOpen ? <X size={15} /> : <MessageSquarePlus size={15} />}
-              <span>{isFormOpen ? "Cancel" : "Write a Customer Review"}</span>
-            </button>
-          </div>
+          {/* Single review toggle button (only shown when reviews already exist) */}
+          {hasReviews && (
+            <div style={{ marginTop: "1.4rem", display: "flex", justifyContent: "center" }}>
+              <button
+                className="btn-primary"
+                style={{ padding: "0.55rem 1.4rem", fontSize: "0.88rem", gap: "8px" }}
+                onClick={() => setIsFormOpen((prev) => !prev)}
+              >
+                {isFormOpen ? <X size={15} /> : <MessageSquarePlus size={15} />}
+                <span>{isFormOpen ? "Cancel" : "Write a Customer Review"}</span>
+              </button>
+            </div>
+          )}
         </div>
 
-        {/* Review Form Card */}
-        {isFormOpen && (
+        {/* Single Review Form Card */}
+        {showForm && (
           <div className="review-form-wrap">
             <form onSubmit={handleSubmit} className="review-form-card">
               <div className="review-form-header">
                 <div>
-                  <h3 style={{ fontSize: "1.2rem", fontWeight: 700, margin: 0, color: "var(--text-primary)" }}>Add Your Book Review</h3>
+                  <h3 style={{ fontSize: "1.2rem", fontWeight: 700, margin: 0, color: "var(--text-primary)" }}>
+                    {hasReviews ? "Add Your Book Review" : "Write a Customer Review"}
+                  </h3>
                   <p style={{ fontSize: "0.82rem", color: "var(--text-muted)", margin: "4px 0 0" }}>
                     Share your experience with fellow readers and developers
                   </p>
                 </div>
-                <button
-                  type="button"
-                  className="nav-icon-btn"
-                  onClick={() => setIsFormOpen(false)}
-                  aria-label="Close form"
-                >
-                  <X size={15} />
-                </button>
+                {hasReviews && (
+                  <button
+                    type="button"
+                    className="nav-icon-btn"
+                    onClick={() => setIsFormOpen(false)}
+                    aria-label="Close form"
+                  >
+                    <X size={15} />
+                  </button>
+                )}
               </div>
 
               {submitted ? (
@@ -246,14 +258,16 @@ export default function Testimonials({ onAddToast }) {
                   </div>
 
                   <div className="form-group full-width" style={{ display: "flex", justifyContent: "flex-end", gap: "10px", marginTop: "0.5rem" }}>
-                    <button
-                      type="button"
-                      className="btn-secondary"
-                      onClick={() => setIsFormOpen(false)}
-                      style={{ padding: "0.55rem 1.1rem", fontSize: "0.85rem" }}
-                    >
-                      Cancel
-                    </button>
+                    {hasReviews && (
+                      <button
+                        type="button"
+                        className="btn-secondary"
+                        onClick={() => setIsFormOpen(false)}
+                        style={{ padding: "0.55rem 1.1rem", fontSize: "0.85rem" }}
+                      >
+                        Cancel
+                      </button>
+                    )}
                     <button
                       type="submit"
                       className="btn-primary"
@@ -279,8 +293,8 @@ export default function Testimonials({ onAddToast }) {
           </div>
         )}
 
-        {/* Review Cards Grid or Empty State */}
-        {reviews.length > 0 ? (
+        {/* Reviews Grid */}
+        {hasReviews && (
           <div className="testimonials-grid">
             {reviews.map((t) => (
               <div key={t.id} className="testimonial-card customer-review-card">
@@ -314,28 +328,6 @@ export default function Testimonials({ onAddToast }) {
               </div>
             ))}
           </div>
-        ) : (
-          !isFormOpen && (
-            <div className="review-empty-state">
-              <div className="empty-icon-circle">
-                <Feather size={28} color="var(--primary)" />
-              </div>
-              <h3 style={{ fontSize: "1.2rem", fontWeight: 700, marginBottom: "0.4rem" }}>
-                No Customer Reviews Yet
-              </h3>
-              <p style={{ fontSize: "0.88rem", color: "var(--text-muted)", maxWidth: "420px", margin: "0 auto 1.4rem" }}>
-                Have you read <strong>{defaultBookTitle}</strong>? Be the first reader to submit your review!
-              </p>
-              <button
-                className="btn-primary"
-                onClick={() => setIsFormOpen(true)}
-                style={{ padding: "0.6rem 1.5rem", fontSize: "0.88rem", gap: "8px" }}
-              >
-                <MessageSquarePlus size={15} />
-                <span>Write the First Review</span>
-              </button>
-            </div>
-          )
         )}
       </div>
     </section>
