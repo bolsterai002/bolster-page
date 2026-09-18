@@ -110,7 +110,7 @@ export default function Footer() {
           <div>
             &copy; {new Date().getFullYear()} ALIENVERSE. All rights reserved.
           </div>
-          <div style={{ display: "flex", gap: "1.5rem" }}>
+          <div className="footer-legal-links">
             <a href="#" className="footer-link-item">Privacy Policy</a>
             <a href="#" className="footer-link-item">Terms of Service</a>
             <a href="#" className="footer-link-item">Accessibility Statement</a>

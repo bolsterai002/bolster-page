@@ -27,7 +27,7 @@ export default function AuthorSpotlight({ onSelectAuthorBook }) {
               <span className="section-tag" style={{ marginBottom: 0 }}>Author of the Month</span>
             </div>
 
-            <h2 style={{ fontSize: "2.4rem", marginBottom: "0.4rem" }}>{author.name}</h2>
+            <h2 className="author-name">{author.name}</h2>
             {author.title && (
               <p style={{ color: "var(--text-accent)", fontWeight: 600, fontSize: "1.05rem", marginBottom: "1.2rem" }}>
                 {author.title}
@@ -75,7 +75,7 @@ export default function AuthorSpotlight({ onSelectAuthorBook }) {
             )}
 
             <button
-              className="btn-primary"
+              className="btn-primary author-cta-btn"
               onClick={onSelectAuthorBook}
             >
               <BookOpen size={15} />

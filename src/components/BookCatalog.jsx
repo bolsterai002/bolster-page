@@ -140,7 +140,7 @@ export default function BookCatalog({
                       <div className="book-rating">
                         <Star size={11} fill="#f59e0b" />
                         <span>{book.rating}</span>
-                        <span style={{ color: "var(--text-muted)", fontSize: "0.75rem" }}>
+                        <span className="book-review-count" style={{ color: "var(--text-muted)", fontSize: "0.75rem" }}>
                           ({book.reviewCount})
                         </span>
                       </div>

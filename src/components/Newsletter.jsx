@@ -27,7 +27,7 @@ export default function Newsletter({ onSubscribeSuccess }) {
           </p>
 
           {isSubmitted ? (
-            <div style={{ display: "inline-flex", alignItems: "center", gap: "10px", background: "rgba(16, 185, 129, 0.15)", border: "1px solid #10b981", padding: "0.85rem 1.6rem", borderRadius: "9999px", color: "#10b981", fontWeight: 600 }}>
+            <div className="newsletter-success-box">
               <Check size={15} />
               <span>Welcome to the Guild! Use code <strong>READ20</strong> at checkout.</span>
             </div>

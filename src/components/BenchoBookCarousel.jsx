@@ -27,7 +27,7 @@ export default function BenchoBookCarousel({
 
   const [isHeld, setIsHeld] = useState(false);
   const [activeBookIndex, setActiveBookIndex] = useState(0);
-  const [windowWidth, setWindowWidth] = useState(
+  const [windowWidth, setWindowWidth] = useState(() =>
     typeof window !== "undefined" ? window.innerWidth : 1024
   );
 
