@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { X, Trash2, Plus, Minus, ArrowRight, Tag, ShieldCheck, ShoppingBag } from "lucide-react";
+import WhatsAppIcon from "./icons/WhatsAppIcon";
 
 export default function CartDrawer({
   isOpen,
@@ -172,15 +173,25 @@ export default function CartDrawer({
             </div>
 
             <button
-              className="btn-primary"
-              style={{ width: "100%", justifyContent: "center", padding: "0.85rem" }}
-              onClick={onCheckout}
+              className="btn-primary btn-checkout-whatsapp"
+              style={{
+                width: "100%",
+                justifyContent: "center",
+                padding: "0.85rem 1rem",
+                gap: "8px"
+              }}
+              onClick={() => onCheckout({ subtotal, discount, discountApplied, promoCode, shipping, total })}
             >
+              <WhatsAppIcon size={17} />
               <span>Proceed to Checkout</span>
               <ArrowRight size={15} />
             </button>
 
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", marginTop: "0.8rem", fontSize: "0.78rem", color: "var(--text-muted)" }}>
+            <div className="cart-checkout-wa-note">
+              <span>Orders sent via WhatsApp to <strong>+91 97458 82435</strong> with book details & cover</span>
+            </div>
+
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", marginTop: "0.6rem", fontSize: "0.78rem", color: "var(--text-muted)" }}>
               <ShieldCheck size={13} color="#10b981" />
               <span>256-Bit SSL Encrypted &bull; 30-Day Guarantee</span>
             </div>
