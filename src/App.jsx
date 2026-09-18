@@ -16,14 +16,8 @@ export default function App() {
   const [books] = useState(BOOKS_DATA);
   const [selectedGenre, setSelectedGenre] = useState("All Books");
   const [searchQuery, setSearchQuery] = useState("");
-  const [wishlist, setWishlist] = useState(["alienverse"]);
-  const [cart, setCart] = useState([
-    {
-      ...BOOKS_DATA[0],
-      quantity: 1,
-      selectedFormat: "Hardcover"
-    }
-  ]);
+  const [wishlist, setWishlist] = useState([]);
+  const [cart, setCart] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [previewBook, setPreviewBook] = useState(null);
   const [toasts, setToasts] = useState([]);
@@ -113,8 +107,6 @@ export default function App() {
     }
   };
 
-  const featuredBook = books[0];
-
   return (
     <div className="app-layout">
       {/* Background Animated Orbs */}
@@ -159,8 +151,12 @@ export default function App() {
         {/* Author Spotlight */}
         <AuthorSpotlight
           onSelectAuthorBook={() => {
-            const authorBook = books.find((b) => b.author.includes("Elena Vance")) || books[0];
-            setPreviewBook(authorBook);
+            const authorBook = books.find((b) => b.author?.toLowerCase().includes("arshak") || b.author?.toLowerCase().includes("roshan")) || books[0];
+            if (authorBook) {
+              setPreviewBook(authorBook);
+            } else {
+              addToast("New editions will be available soon!");
+            }
           }}
         />
 

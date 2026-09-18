@@ -1,5 +1,5 @@
-import React from "react";
-import { Star, Eye, Plus, Check, Heart, Search, X } from "lucide-react";
+import React, { useState } from "react";
+import { Star, Eye, Plus, Check, Heart, Search, X, BookOpen, RotateCw } from "lucide-react";
 import { GENRES } from "../data/bookData";
 
 export default function BookCatalog({
@@ -15,6 +15,15 @@ export default function BookCatalog({
   onPreviewBook,
   searchInputRef
 }) {
+  const [flippedCards, setFlippedCards] = useState({});
+
+  const toggleCardFlip = (bookId) => {
+    setFlippedCards((prev) => ({
+      ...prev,
+      [bookId]: !prev[bookId]
+    }));
+  };
+
   const filteredBooks = books.filter((book) => {
     const matchesGenre =
       selectedGenre === "All Books" || book.genre.toLowerCase() === selectedGenre.toLowerCase();
@@ -79,7 +88,20 @@ export default function BookCatalog({
         </div>
 
         {/* Books Grid */}
-        {filteredBooks.length === 0 ? (
+        {books.length === 0 ? (
+          <div className="catalog-empty-card">
+            <div className="catalog-empty-icon-wrap">
+              <BookOpen size={28} />
+            </div>
+            <h3 className="catalog-empty-title">Catalog Updating Soon</h3>
+            <p className="catalog-empty-desc">
+              All books have been temporarily archived as we prepare our next seasonal drop of hand-curated literature and rare editions.
+            </p>
+            <a href="#newsletter" className="btn-primary" style={{ marginTop: "1.2rem", display: "inline-flex" }}>
+              Get Launch Notified
+            </a>
+          </div>
+        ) : filteredBooks.length === 0 ? (
           <div style={{ textAlign: "center", padding: "4rem 1rem", color: "var(--text-muted)" }}>
             <p style={{ fontSize: "1.2rem", marginBottom: "1rem" }}>
               No books found matching "<strong>{searchQuery}</strong>"
@@ -109,12 +131,29 @@ export default function BookCatalog({
                     title="Click for quick preview"
                   >
                     <img
-                      src={book.cover}
-                      alt={book.title}
+                      src={flippedCards[book.id] && book.backCover ? book.backCover : book.cover}
+                      alt={`${book.title} ${flippedCards[book.id] ? "Back Cover" : "Front Cover"}`}
                       className="book-cover-img"
                       loading="lazy"
                     />
                     <span className="book-badge">{book.badge}</span>
+
+                    {book.backCover && (
+                      <button
+                        type="button"
+                        className="card-cover-flip-btn"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleCardFlip(book.id);
+                        }}
+                        title={`Flip to ${flippedCards[book.id] ? "Front Cover" : "Back Cover"}`}
+                        aria-label="Flip cover"
+                      >
+                        <RotateCw size={11} />
+                        <span>{flippedCards[book.id] ? "Front" : "Back"}</span>
+                      </button>
+                    )}
+
                     <button
                       type="button"
                       className={`wishlist-toggle-btn ${isWishlisted ? "active" : ""}`}

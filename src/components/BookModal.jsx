@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { X, Star, Headphones, BookOpen, Volume2, Play, Pause, ShoppingBag, Check } from "lucide-react";
+import { X, Star, Play, Pause, ShoppingBag, Check, RotateCw } from "lucide-react";
 
 export default function BookModal({ book, isOpen, onClose, onAddToCart, isInCart }) {
   const [activeTab, setActiveTab] = useState("synopsis"); // 'synopsis' | 'excerpt' | 'audio'
   const [selectedFormat, setSelectedFormat] = useState("Hardcover");
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
   const [audioProgress, setAudioProgress] = useState(25);
+  const [coverSide, setCoverSide] = useState("front"); // 'front' | 'back'
 
   useEffect(() => {
     if (book) {
-      setSelectedFormat(book.formats[0] || "Hardcover");
+      setSelectedFormat(book.formats?.[0] || "Hardcover");
       setActiveTab("synopsis");
       setIsPlayingAudio(false);
+      setCoverSide("front");
     }
   }, [book]);
 
@@ -49,6 +51,8 @@ export default function BookModal({ book, isOpen, onClose, onAddToCart, isInCart
   if (selectedFormat === "Audiobook") formatMultiplier = 0.85;
   const currentFormatPrice = (book.price * formatMultiplier).toFixed(2);
 
+  const displayCover = coverSide === "back" && book.backCover ? book.backCover : book.cover;
+
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -60,8 +64,58 @@ export default function BookModal({ book, isOpen, onClose, onAddToCart, isInCart
         <div className="modal-grid">
           {/* Cover & Details Sidebar */}
           <div>
-            <img src={book.cover} alt={book.title} className="modal-cover-img" />
+            <div className="modal-cover-wrapper">
+              <img
+                src={displayCover}
+                alt={`${book.title} ${coverSide === "back" ? "Back Cover" : "Front Cover"}`}
+                className="modal-cover-img"
+                onClick={() => book.backCover && setCoverSide((prev) => (prev === "front" ? "back" : "front"))}
+                style={{ cursor: book.backCover ? "pointer" : "default" }}
+                title={book.backCover ? "Click to flip cover" : undefined}
+              />
+              {book.backCover && (
+                <button
+                  type="button"
+                  className="modal-cover-flip-btn"
+                  onClick={() => setCoverSide((prev) => (prev === "front" ? "back" : "front"))}
+                  title={`Flip to ${coverSide === "front" ? "Back Cover" : "Front Cover"}`}
+                >
+                  <RotateCw size={12} />
+                  <span>{coverSide === "front" ? "View Back" : "View Front"}</span>
+                </button>
+              )}
+            </div>
+
+            {/* Front / Back Switcher Pills */}
+            {book.backCover && (
+              <div className="modal-cover-toggle-pills">
+                <button
+                  type="button"
+                  className={`modal-cover-pill ${coverSide === "front" ? "active" : ""}`}
+                  onClick={() => setCoverSide("front")}
+                >
+                  Front Cover
+                </button>
+                <button
+                  type="button"
+                  className={`modal-cover-pill ${coverSide === "back" ? "active" : ""}`}
+                  onClick={() => setCoverSide("back")}
+                >
+                  Back Cover
+                </button>
+              </div>
+            )}
+
+            {/* Inscription quote if viewing back cover */}
+            {coverSide === "back" && book.tagline && (
+              <div className="modal-back-tagline-box">
+                <span className="modal-back-tagline-label">Back Cover Inscription</span>
+                <p className="modal-back-tagline-text">"{book.tagline}"</p>
+              </div>
+            )}
+
             <div style={{ marginTop: "1.2rem", fontSize: "0.85rem", color: "var(--text-muted)", display: "flex", flexDirection: "column", gap: "6px" }}>
+              {book.series && <div><strong>Series:</strong> {book.series}</div>}
               <div><strong>Publisher:</strong> {book.publisher}</div>
               <div><strong>Pages:</strong> {book.pageCount} pages</div>
               <div><strong>ISBN:</strong> {book.isbn}</div>

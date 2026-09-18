@@ -53,17 +53,26 @@ export default function MorphSurface({ onSelectBook, books = [] }) {
 
     setTimeout(() => {
       setIsSearching(false);
-      const matched = books.find(
-        (b) =>
-          b.title.toLowerCase().includes(query.toLowerCase()) ||
-          b.genre.toLowerCase().includes(query.toLowerCase()) ||
-          b.author.toLowerCase().includes(query.toLowerCase())
-      ) || books[0];
+      const matched = books && books.length > 0
+        ? books.find(
+            (b) =>
+              b.title.toLowerCase().includes(query.toLowerCase()) ||
+              b.genre.toLowerCase().includes(query.toLowerCase()) ||
+              b.author.toLowerCase().includes(query.toLowerCase())
+          ) || books[0]
+        : null;
 
-      setAiResponse({
-        text: `Based on your request, I highly recommend exploring "${matched.title}" by ${matched.author}. It is a standout ${matched.genre} masterwork that perfectly matches your curiosity.`,
-        book: matched,
-      });
+      if (matched) {
+        setAiResponse({
+          text: `Based on your request, I highly recommend exploring "${matched.title}" by ${matched.author}. It is a standout ${matched.genre} masterwork that perfectly matches your curiosity.`,
+          book: matched,
+        });
+      } else {
+        setAiResponse({
+          text: "Our catalog is currently being updated with upcoming releases and rare editions. Please check back shortly or join our Readers Guild below!",
+          book: null,
+        });
+      }
     }, 450);
   };
 
@@ -72,11 +81,21 @@ export default function MorphSurface({ onSelectBook, books = [] }) {
     setIsSearching(true);
     setTimeout(() => {
       setIsSearching(false);
-      const matched = books.find((b) => b.genre.toLowerCase().includes("sci-fi")) || books[0];
-      setAiResponse({
-        text: `Here is a curated literary match: "${matched.title}" (${matched.genre}). Readers love its poignant depth and expansive worldbuilding.`,
-        book: matched,
-      });
+      const matched = books && books.length > 0
+        ? books.find((b) => b.genre.toLowerCase().includes("sci-fi")) || books[0]
+        : null;
+
+      if (matched) {
+        setAiResponse({
+          text: `Here is a curated literary match: "${matched.title}" (${matched.genre}). Readers love its poignant depth and expansive worldbuilding.`,
+          book: matched,
+        });
+      } else {
+        setAiResponse({
+          text: "Our catalog is currently being updated with upcoming releases and rare editions. Please check back shortly or join our Readers Guild below!",
+          book: null,
+        });
+      }
     }, 400);
   };
 

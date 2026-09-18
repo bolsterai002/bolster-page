@@ -3,7 +3,7 @@ import { ArrowRight, Headphones } from "lucide-react";
 import BenchoBookCarousel from "./BenchoBookCarousel";
 
 export default function Hero({ books, onPreviewBook, onAddToCart }) {
-  const featuredBook = books[0];
+  const featuredBook = books && books.length > 0 ? books[0] : null;
 
   return (
     <section className="hero-section">
@@ -19,7 +19,7 @@ export default function Hero({ books, onPreviewBook, onAddToCart }) {
             </h1>
 
             <p className="hero-description">
-              Hand-curated literature. Signed collector’s editions. Lossless spatial audiobooks. Drag, swipe, or click the 3D book stack carousel to explore our collection.
+              Hand-curated literature. Signed collector’s editions. Lossless spatial audiobooks. Discover our upcoming releases and private press editions.
             </p>
           </div>
 
@@ -44,13 +44,22 @@ export default function Hero({ books, onPreviewBook, onAddToCart }) {
                 <ArrowRight size={15} />
               </a>
 
-              <button 
-                className="btn-secondary" 
-                onClick={() => onPreviewBook(featuredBook)}
-              >
-                <Headphones size={15} color="var(--primary)" />
-                <span>Listen Audio Sample</span>
-              </button>
+              {featuredBook ? (
+                <button 
+                  className="btn-secondary" 
+                  onClick={() => onPreviewBook(featuredBook)}
+                >
+                  <Headphones size={15} color="var(--primary)" />
+                  <span>Listen Audio Sample</span>
+                </button>
+              ) : (
+                <a 
+                  href="#newsletter"
+                  className="btn-secondary"
+                >
+                  <span>Get Launch Notified</span>
+                </a>
+              )}
             </div>
 
             {/* Social Proof Metrics */}

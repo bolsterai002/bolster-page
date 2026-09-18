@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect, useLayoutEffect, useCallback } from "react";
-import { ChevronLeft, ChevronRight, Play, ShoppingBag, Star } from "lucide-react";
+import { ChevronLeft, ChevronRight, Play, ShoppingBag, Star, RotateCw } from "lucide-react";
 
 // Clamp & Lerp helper utilities
 const clamp = (val, min, max) => Math.min(max, Math.max(min, val));
@@ -27,6 +27,7 @@ export default function BenchoBookCarousel({
 
   const [isHeld, setIsHeld] = useState(false);
   const [activeBookIndex, setActiveBookIndex] = useState(0);
+  const [isBackCoverView, setIsBackCoverView] = useState(false);
   const [windowWidth, setWindowWidth] = useState(() =>
     typeof window !== "undefined" ? window.innerWidth : 1024
   );
@@ -45,11 +46,22 @@ export default function BenchoBookCarousel({
   const cardHeight = isMobile ? 205 : isTablet ? 250 : 305;
   const stageHeight = isMobile ? 250 : isTablet ? 290 : 345;
 
-  const total = books.length;
+  const total = books ? books.length : 0;
   const PULL_FACTOR = isMobile ? 95 : 140;
 
   // Calculate 3D Ring transforms for all cards
   const updateCardTransforms = useCallback(() => {
+    if (total === 0) return;
+    if (total === 1) {
+      setActiveBookIndex(0);
+      const slot = slotsRef.current[0];
+      if (slot) {
+        slot.style.transform = `translate(-50%, -50%) translate(0px, 0px) rotate(0deg) scale(1)`;
+        slot.style.zIndex = "100";
+        slot.style.opacity = "1";
+      }
+      return;
+    }
     const currentTurn = turnRef.current;
     
     // Determine closest front card index
@@ -102,11 +114,17 @@ export default function BenchoBookCarousel({
   };
 
   const step = (delta) => {
+    if (total <= 1) return;
     const nextTarget = Math.round(turnRef.current) + delta;
     animateToTurn(nextTarget);
   };
 
   const handleCardClick = (index) => {
+    if (total === 0) return;
+    if (total === 1) {
+      onPreviewBook(books[0]);
+      return;
+    }
     if (dragRef.current && dragRef.current.moved) return;
     
     const current = turnRef.current;
@@ -122,6 +140,7 @@ export default function BenchoBookCarousel({
   };
 
   const handlePointerDown = (e) => {
+    if (total <= 1) return;
     cancelAnimationFrame(animFrameRef.current);
     dragRef.current = {
       x0: e.clientX,
@@ -138,9 +157,10 @@ export default function BenchoBookCarousel({
   };
 
   const handlePointerMove = (e) => {
+    if (total <= 1) return;
     if (!dragRef.current) return;
     const dx = e.clientX - dragRef.current.x0;
-    if (!dragRef.current.moved && Math.abs(dx) > 3) {
+    if (Math.abs(dx) > 3) {
       dragRef.current.moved = true;
     }
     const dt = Math.max(1, e.timeStamp - dragRef.current.lastTime);
@@ -153,6 +173,7 @@ export default function BenchoBookCarousel({
   };
 
   const handlePointerUp = () => {
+    if (total <= 1) return;
     if (!dragRef.current) return;
     const { vx } = dragRef.current;
     dragRef.current = null;
@@ -164,6 +185,7 @@ export default function BenchoBookCarousel({
   };
 
   const handleKeyDown = (e) => {
+    if (total <= 1) return;
     if (e.key === "ArrowRight") {
       e.preventDefault();
       step(1);
@@ -172,6 +194,20 @@ export default function BenchoBookCarousel({
       step(-1);
     }
   };
+
+  if (!books || books.length === 0) {
+    return (
+      <div className="bencho-carousel-container" ref={containerRef}>
+        <div className="empty-carousel-card">
+          <span className="empty-carousel-badge">Season 2026</span>
+          <h3 className="empty-carousel-title">New Editions Arriving Soon</h3>
+          <p className="empty-carousel-desc">
+            Our curated catalog is being updated with hand-bound literature and spatial audiobooks. Check back shortly!
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   const activeBook = books[activeBookIndex] || books[0];
 
@@ -212,6 +248,7 @@ export default function BenchoBookCarousel({
                   sink={isMobile ? 50 : sink}
                   isHeld={isHeld}
                   corner={isMobile ? 14 : 18}
+                  isBackCover={activeBookIndex === i && isBackCoverView}
                 />
               </div>
             </div>
@@ -221,14 +258,16 @@ export default function BenchoBookCarousel({
 
       {/* Orbit Navigation Controls & Active Book Bar */}
       <div className="carousel-control-hud">
-        <button
-          className="carousel-nav-btn"
-          onClick={() => step(-1)}
-          aria-label="Previous Book"
-          title="Previous Book"
-        >
-          <ChevronLeft size={13} />
-        </button>
+        {total > 1 && (
+          <button
+            className="carousel-nav-btn"
+            onClick={() => step(-1)}
+            aria-label="Previous Book"
+            title="Previous Book"
+          >
+            <ChevronLeft size={13} />
+          </button>
+        )}
 
         {/* Current Active Book Indicator Info */}
         <div className="active-book-info">
@@ -243,18 +282,32 @@ export default function BenchoBookCarousel({
           <p className="active-book-author">by {activeBook.author}</p>
         </div>
 
-        <button
-          className="carousel-nav-btn"
-          onClick={() => step(1)}
-          aria-label="Next Book"
-          title="Next Book"
-        >
-          <ChevronRight size={13} />
-        </button>
+        {total > 1 && (
+          <button
+            className="carousel-nav-btn"
+            onClick={() => step(1)}
+            aria-label="Next Book"
+            title="Next Book"
+          >
+            <ChevronRight size={13} />
+          </button>
+        )}
       </div>
 
       {/* Quick Actions for Currently Front Book */}
       <div className="active-book-actions">
+        {activeBook.backCover && (
+          <button
+            type="button"
+            className="btn-secondary active-action-btn"
+            onClick={() => setIsBackCoverView(!isBackCoverView)}
+            title={isBackCoverView ? "View Front Cover" : "View Back Cover"}
+          >
+            <RotateCw size={11} />
+            <span>{isBackCoverView ? "Front Cover" : "Back Cover"}</span>
+          </button>
+        )}
+
         <button
           className="btn-secondary active-action-btn"
           onClick={() => onPreviewBook(activeBook)}
@@ -276,7 +329,7 @@ export default function BenchoBookCarousel({
 }
 
 // 3D Pointer Sink Card Component
-function BenchoCard({ book, sink, isHeld, corner }) {
+function BenchoCard({ book, sink, isHeld, corner, isBackCover }) {
   const cardRef = useRef(null);
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
@@ -310,6 +363,8 @@ function BenchoCard({ book, sink, isHeld, corner }) {
   const sheenY = ((tilt.y + 1) / 2) * 100;
   const sheenAlpha = isHovered ? sinkFactor * 0.4 : 0;
 
+  const coverUrl = isBackCover && book.backCover ? book.backCover : book.cover;
+
   return (
     <div
       ref={cardRef}
@@ -319,7 +374,7 @@ function BenchoCard({ book, sink, isHeld, corner }) {
       onPointerCancel={() => setIsHovered(false)}
       style={{
         borderRadius: `${corner}px`,
-        backgroundImage: `url(${book.cover})`,
+        backgroundImage: `url(${coverUrl})`,
         transform: `translateZ(${tz.toFixed(1)}px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`,
       }}
     >
@@ -333,7 +388,9 @@ function BenchoCard({ book, sink, isHeld, corner }) {
           `,
         }}
       />
-      <div className="bencho-card-badge">{book.genre}</div>
+      <div className="bencho-card-badge">
+        {isBackCover ? "Back Cover" : book.badge || book.genre}
+      </div>
     </div>
   );
 }

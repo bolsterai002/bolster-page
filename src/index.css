@@ -460,6 +460,44 @@ button {
   perspective: 1000px;
 }
 
+.empty-carousel-card {
+  width: 100%;
+  max-width: 440px;
+  margin: 1.5rem auto;
+  padding: 2.5rem 2rem;
+  border-radius: 20px;
+  background: #ffffff;
+  border: 1px solid var(--border-subtle);
+  box-shadow: 0 16px 36px rgba(45, 38, 30, 0.08);
+  text-align: center;
+}
+
+.empty-carousel-badge {
+  display: inline-block;
+  padding: 0.3rem 0.85rem;
+  border-radius: var(--radius-full);
+  background: #f4f4f5;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+}
+
+.empty-carousel-title {
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.6rem;
+}
+
+.empty-carousel-desc {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  max-width: 360px;
+  margin: 0 auto;
+}
+
 .car {
   position: relative;
   width: 490px;
@@ -1104,6 +1142,45 @@ button {
 /* ==========================================================================
    BOOK CATALOG GRID
    ========================================================================== */
+.catalog-empty-card {
+  width: 100%;
+  max-width: 580px;
+  margin: 2rem auto;
+  padding: 3.5rem 2rem;
+  border-radius: 24px;
+  background: #ffffff;
+  border: 1px solid var(--border-subtle);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.04);
+  text-align: center;
+}
+
+.catalog-empty-icon-wrap {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #f4f4f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.25rem;
+  color: var(--primary);
+}
+
+.catalog-empty-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.catalog-empty-desc {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  max-width: 440px;
+  margin: 0 auto;
+}
+
 .books-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -1183,6 +1260,34 @@ button {
   color: var(--text-secondary);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   transition: all var(--transition-fast);
+}
+
+.card-cover-flip-btn {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  background: rgba(15, 23, 42, 0.82);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  z-index: 5;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
+}
+
+.card-cover-flip-btn:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+  transform: scale(1.04);
 }
 
 .wishlist-toggle-btn:hover {
@@ -1394,12 +1499,106 @@ button {
   gap: 2.2rem;
 }
 
+.modal-cover-wrapper {
+  position: relative;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.2);
+  background: #0d131f;
+}
+
 .modal-cover-img {
   width: 100%;
-  height: 400px;
-  object-fit: cover;
-  border-radius: var(--radius-md);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+  height: 390px;
+  object-fit: contain;
+  display: block;
+  background: #0b0f19;
+  transition: transform 0.35s ease, opacity 0.25s ease;
+}
+
+.modal-cover-flip-btn {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  background: rgba(15, 23, 42, 0.88);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+  z-index: 4;
+}
+
+.modal-cover-flip-btn:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+  transform: scale(1.04);
+}
+
+.modal-cover-toggle-pills {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+  background: #ede8df;
+  padding: 4px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.modal-cover-pill {
+  flex: 1;
+  padding: 6px 10px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border-radius: var(--radius-full);
+  color: var(--text-secondary);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-align: center;
+}
+
+.modal-cover-pill.active {
+  background: #ffffff;
+  color: var(--primary);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.modal-back-tagline-box {
+  margin-top: 12px;
+  padding: 10px 12px;
+  background: rgba(7, 94, 77, 0.07);
+  border: 1px dashed rgba(7, 94, 77, 0.35);
+  border-radius: var(--radius-sm);
+}
+
+.modal-back-tagline-label {
+  display: block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 800;
+  color: var(--primary);
+  margin-bottom: 3px;
+}
+
+.modal-back-tagline-text {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  font-style: italic;
+  line-height: 1.4;
 }
 
 .modal-tabs {
