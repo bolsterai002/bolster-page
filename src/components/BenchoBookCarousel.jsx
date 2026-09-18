@@ -249,6 +249,7 @@ export default function BenchoBookCarousel({
                   isHeld={isHeld}
                   corner={isMobile ? 14 : 18}
                   isBackCover={activeBookIndex === i && isBackCoverView}
+                  onToggleCover={() => setIsBackCoverView(!isBackCoverView)}
                 />
               </div>
             </div>
@@ -294,25 +295,13 @@ export default function BenchoBookCarousel({
         )}
       </div>
 
-      {/* Quick Actions for Currently Front Book */}
+      {/* Quick Actions for Currently Active Book */}
       <div className="active-book-actions">
-        {activeBook.backCover && (
-          <button
-            type="button"
-            className="btn-secondary active-action-btn"
-            onClick={() => setIsBackCoverView(!isBackCoverView)}
-            title={isBackCoverView ? "View Front Cover" : "View Back Cover"}
-          >
-            <RotateCw size={11} />
-            <span>{isBackCoverView ? "Front Cover" : "Back Cover"}</span>
-          </button>
-        )}
-
         <button
           className="btn-secondary active-action-btn"
           onClick={() => onPreviewBook(activeBook)}
         >
-          <Play size={11} fill="#075e4d" color="#075e4d" />
+          <Play size={12} fill="#075e4d" color="#075e4d" />
           <span>Preview</span>
         </button>
 
@@ -320,7 +309,7 @@ export default function BenchoBookCarousel({
           className="btn-primary active-action-btn"
           onClick={() => onAddToCart(activeBook)}
         >
-          <ShoppingBag size={11} />
+          <ShoppingBag size={12} />
           <span>Add ${activeBook.price.toFixed(2)}</span>
         </button>
       </div>
@@ -329,7 +318,7 @@ export default function BenchoBookCarousel({
 }
 
 // 3D Pointer Sink Card Component
-function BenchoCard({ book, sink, isHeld, corner, isBackCover }) {
+function BenchoCard({ book, sink, isHeld, corner, isBackCover, onToggleCover }) {
   const cardRef = useRef(null);
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
@@ -388,9 +377,23 @@ function BenchoCard({ book, sink, isHeld, corner, isBackCover }) {
           `,
         }}
       />
-      <div className="bencho-card-badge">
-        {isBackCover ? "Back Cover" : book.badge || book.genre}
-      </div>
+
+      {/* Sleek discreet flip button in corner of card */}
+      {book.backCover && (
+        <button
+          type="button"
+          className="car-card-flip-btn"
+          onClick={(e) => {
+            e.stopPropagation();
+            if (onToggleCover) onToggleCover();
+          }}
+          title={isBackCover ? "View Front Cover" : "View Back Cover"}
+          aria-label="Flip Cover"
+        >
+          <RotateCw size={11} />
+          <span>{isBackCover ? "Front" : "Back"}</span>
+        </button>
+      )}
     </div>
   );
 }
