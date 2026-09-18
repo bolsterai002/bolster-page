@@ -19,7 +19,7 @@ export default function AuthorSpotlight({ onSelectAuthorBook }) {
               />
               <div className="author-badge-pill character-badge-pill">
                 <Sparkles size={13} color="#000000" />
-                <span>Side Character Design</span>
+                <span>Alienverse: AI Software Engineering Standards</span>
               </div>
             </div>
           )}

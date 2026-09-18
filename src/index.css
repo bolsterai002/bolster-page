@@ -2073,6 +2073,8 @@ button {
   letter-spacing: 0.02em;
   box-shadow: 0 4px 16px rgba(212, 251, 63, 0.4);
   z-index: 2;
+  max-width: 90%;
+  text-align: center;
 }
 
 .author-quote-box {
@@ -3356,8 +3358,12 @@ button {
 
   .character-badge-pill {
     padding: 0.35rem 0.85rem;
-    font-size: 0.72rem;
+    font-size: 0.68rem;
     bottom: -10px;
+    max-width: 92%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .modal-character-container {
