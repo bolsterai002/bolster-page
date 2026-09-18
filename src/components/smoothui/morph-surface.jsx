@@ -2,6 +2,9 @@ import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, Send, X, CornerDownLeft, BookOpen, Search, Compass } from "lucide-react";
 
+const BASE = import.meta.env.BASE_URL || '/';
+const getAsset = (path) => `${BASE.endsWith('/') ? BASE : `${BASE}/`}${path.replace(/^\//, '')}`;
+
 export default function MorphSurface({ onSelectBook, books = [] }) {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -111,19 +114,22 @@ export default function MorphSurface({ onSelectBook, books = [] }) {
         className={`morph-surface ${isOpen ? "expanded" : "dock"}`}
       >
         {!isOpen ? (
-          /* Dock State (Compact Pill) */
           <motion.button
             layout="position"
             className="morph-dock-btn"
             onClick={() => setIsOpen(true)}
             aria-label="Ask AI Book Concierge"
           >
-            <div className="morph-icon-circle">
-              <Sparkles size={13} />
+            <div className="morph-dock-avatar-wrap">
+              <img
+                src={getAsset("images/alien_mentor_character.jpg")}
+                alt="Alien Mentor"
+                className="morph-dock-avatar"
+              />
             </div>
             <span className="morph-dock-label">
-              <span className="dock-label-full">Ask ALIENVERSE AI Concierge...</span>
-              <span className="dock-label-short">Ask AI Concierge...</span>
+              <span className="dock-label-full">Ask Alien Mentor Concierge...</span>
+              <span className="dock-label-short">Ask Alien Concierge...</span>
             </span>
             <div className="morph-dock-key">
               <span>⌘K</span>
@@ -141,16 +147,24 @@ export default function MorphSurface({ onSelectBook, books = [] }) {
           >
             {/* Header */}
             <div className="morph-header">
-              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                <div className="morph-icon-circle" style={{ width: "26px", height: "26px" }}>
-                  <Sparkles size={12} />
+              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                <div className="morph-header-avatar-wrap">
+                  <img
+                    src={getAsset("images/alien_mentor_character.jpg")}
+                    alt="Alien Mentor"
+                    className="morph-header-avatar"
+                  />
+                  <span className="morph-avatar-online-dot" />
                 </div>
                 <div>
-                  <h4 style={{ fontSize: "0.92rem", fontWeight: 800, color: "var(--text-primary)" }}>
-                    AI Book Concierge
-                  </h4>
-                  <p style={{ fontSize: "0.7rem", color: "var(--text-muted)" }}>
-                    Ask anything, get personalized book recommendations
+                  <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                    <h4 style={{ fontSize: "0.92rem", fontWeight: 800, color: "var(--text-primary)", margin: 0 }}>
+                      Alien Mentor AI Guide
+                    </h4>
+                    <span className="morph-character-pill">Side Character</span>
+                  </div>
+                  <p style={{ fontSize: "0.7rem", color: "var(--text-muted)", margin: "2px 0 0" }}>
+                    "When humans get stuck, aliens arrive." • Universe Concierge
                   </p>
                 </div>
               </div>

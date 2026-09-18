@@ -14,6 +14,7 @@ export const BOOKS_DATA = [
     reviewCount: 3840,
     cover: getAsset("images/alienverse_ai_front.jpg"),
     backCover: getAsset("images/alienverse_ai_back.jpg"),
+    characterImage: getAsset("images/alien_mentor_character.jpg"),
     badge: "Developer Series #1",
     featured: true,
     formats: ["Hardcover", "eBook", "Audiobook"],
@@ -29,10 +30,19 @@ export const BOOKS_DATA = [
   }
 ];
 
+export const SIDE_CHARACTER = {
+  name: "The Alien Mentor & Student",
+  role: "Side Characters • Alienverse Developer Series",
+  image: getAsset("images/alien_mentor_character.jpg"),
+  tagline: "When humans get stuck, aliens arrive.",
+  description: "The Alien Mentor guiding the next generation through the frontiers of Artificial Intelligence and synthetic software architecture."
+};
+
 export const FEATURED_AUTHOR = {
   name: "Arshak Roshan",
   title: "Author & AI Systems Architect",
   avatar: "",
+  characterImage: getAsset("images/alien_mentor_character.jpg"),
   signatureBook: "Alienverse: AI Software Engineering Standards",
   bio: "Arshak Roshan is the author of the acclaimed Alienverse Developer Series, articulating new software engineering standards for the synthetic intelligence era. His work merges technical systems architecture with cosmological foresight.",
   quote: "“When humans get stuck, aliens arrive. The next leap in software development belongs to those who build beyond terrestrial limits.”",

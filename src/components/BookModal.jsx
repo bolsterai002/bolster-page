@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { X, Star, Play, Pause, ShoppingBag, Check, RotateCw } from "lucide-react";
+import { X, Star, Play, Pause, ShoppingBag, Check, RotateCw, Sparkles } from "lucide-react";
 
 export default function BookModal({ book, isOpen, onClose, onAddToCart, isInCart }) {
   const [activeTab, setActiveTab] = useState("synopsis"); // 'synopsis' | 'excerpt' | 'audio'
@@ -177,6 +177,7 @@ export default function BookModal({ book, isOpen, onClose, onAddToCart, isInCart
             </div>
 
             {/* Tabs Navigation */}
+            {/* Tabs Navigation */}
             <div className="modal-tabs">
               <button
                 className={`modal-tab-btn ${activeTab === "synopsis" ? "active" : ""}`}
@@ -184,6 +185,14 @@ export default function BookModal({ book, isOpen, onClose, onAddToCart, isInCart
               >
                 Synopsis
               </button>
+              {book.characterImage && (
+                <button
+                  className={`modal-tab-btn ${activeTab === "character" ? "active" : ""}`}
+                  onClick={() => setActiveTab("character")}
+                >
+                  Side Characters
+                </button>
+              )}
               <button
                 className={`modal-tab-btn ${activeTab === "excerpt" ? "active" : ""}`}
                 onClick={() => setActiveTab("excerpt")}
@@ -216,6 +225,29 @@ export default function BookModal({ book, isOpen, onClose, onAddToCart, isInCart
                   }}>
                     {book.quote}
                   </blockquote>
+                </div>
+              )}
+
+              {activeTab === "character" && book.characterImage && (
+                <div className="modal-character-container">
+                  <div className="modal-character-img-wrap">
+                    <img
+                      src={book.characterImage}
+                      alt="Alienverse Side Character: The Alien Mentor & Human Apprentice"
+                      className="modal-character-img"
+                    />
+                    <div className="modal-character-badge">
+                      <Sparkles size={11} color="#000" />
+                      <span>Side Character Concept</span>
+                    </div>
+                  </div>
+                  <div className="modal-character-details">
+                    <h4 className="modal-character-title">The Alien Mentor & The Human Apprentice</h4>
+                    <p className="modal-character-quote">"When humans get stuck, aliens arrive."</p>
+                    <p className="modal-character-desc">
+                      Official concept design for the Alienverse Developer Series. Depicting the symbiotic partnership between extraterrestrial intelligence and terrestrial software engineers solving complex neural architecture challenges.
+                    </p>
+                  </div>
                 </div>
               )}
 

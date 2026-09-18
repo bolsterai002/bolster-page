@@ -8,14 +8,18 @@ export default function AuthorSpotlight({ onSelectAuthorBook }) {
   return (
     <section id="author" className="author-section">
       <div className="container">
-        <div className={`author-card ${!author.avatar ? "author-card-no-photo" : ""}`}>
-          {/* Author Image Column (Rendered only when avatar is present) */}
-          {author.avatar && (
-            <div className="author-img-wrap">
-              <img src={author.avatar} alt={author.name} className="author-img" />
-              <div className="author-badge-pill">
-                <Award size={14} color="#f59e0b" />
-                <span>Featured Luminary 2026</span>
+        <div className={`author-card ${!author.characterImage && !author.avatar ? "author-card-no-photo" : ""}`}>
+          {/* Side Character Design Column */}
+          {(author.characterImage || author.avatar) && (
+            <div className="author-img-wrap character-img-wrap">
+              <img
+                src={author.characterImage || author.avatar}
+                alt="Alienverse Side Character: The Alien Mentor & Student"
+                className="author-img character-spotlight-img"
+              />
+              <div className="author-badge-pill character-badge-pill">
+                <Sparkles size={13} color="#000000" />
+                <span>Side Character Design</span>
               </div>
             </div>
           )}
@@ -24,7 +28,7 @@ export default function AuthorSpotlight({ onSelectAuthorBook }) {
           <div className="author-content-col">
             <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "0.6rem" }}>
               <Feather size={14} color="var(--primary)" />
-              <span className="section-tag" style={{ marginBottom: 0 }}>Author of the Month</span>
+              <span className="section-tag" style={{ marginBottom: 0 }}>Author & Universe Creator</span>
             </div>
 
             <h2 className="author-name">{author.name}</h2>
